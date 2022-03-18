@@ -15,21 +15,46 @@
     echo "You have chosen the create option"
     echo ""
 
+#if option ---Drop
+ elif [ "$1" == "--drop" ];then
+    echo ""
+    echo "You have chosen the drop option"
+    echo ""
+    
+#if option ---Infos
+elif [ "$1" == "--infos" ];then
+    echo ""
+    echo "You have chosen the infos option"
+    echo ""
+
+#if option ---Start
+elif [ "$1" == "--start" ];then
+    echo ""
+    echo "You have chosen the start option"
+    echo ""
+
+#if option ---Ansible
+elif [ "$1" == "--ansible" ];then
+    echo ""
+    echo "You have chosen the ansible option"
+    echo ""
+
 #if no option, display help 
  else
    
-     "
-
+    echo -e
+    "
+        Choose an option 
       Options : 
-        -  --Create :  Craete Containers
+         --create :  Craete Containers
 
-        -  --Drop :    Drop containers
+         --drop :    Drop containers
 
-        -  --Infos :   Infos containers caracteristic (IP, Name, User ..)
+         --infos :   Infos containers caracteristic (IP, Name, User ..)
 
-        -  --Start :   Starting containers
+         --start :   Starting containers
 
-        -  --Ansible : Deploying ansible
+         --ansible : Deploying ansible
 
     "
 fi
