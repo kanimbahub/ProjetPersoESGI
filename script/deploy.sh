@@ -9,9 +9,18 @@
 #                                                                   #
 #####################################################################
 
-echo "
+#if option ---Create 
+ if [ "$1" == "--create" ];then
+    echo ""
+    echo "You have chosen the create option"
+    echo ""
 
-Options : 
+#if no option, display help 
+ else
+   
+     "
+
+      Options : 
         -  --Create :  Craete Containers
 
         -  --Drop :    Drop containers
@@ -20,6 +29,7 @@ Options :
 
         -  --Start :   Starting containers
 
-        -  --Ansible : Deplying ansible
+        -  --Ansible : Deploying ansible
 
-"
+    "
+fi
