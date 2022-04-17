@@ -11,48 +11,55 @@
 
 #if option ---Create 
  if [ "$1" == "--create" ];then
-    echo ""
-    echo "You have chosen the create option"
-    echo ""
-    nb_machine=1
-    [ "$2" != "" ] && nb_machine=$2
+      echo ""
+      echo "You have chosen the create option"
+      echo ""
 
-    docker run -tid --name $USER-alpine alpine:latest
+    # Definition of the number of machines
+      nb_machine=1
+      [ "$2" != "" ] && nb_machine=$2
 
-    echo "You have created ${nb_machine} machines"
+    # Creating containers
+      echo "Beginning to create the container(s)..."
+    for i in $(seq 1 $nb_machine);do
+       docker run -tid --name $USER-alpine-$i alpine:latest
+      echo "Container $USER-alpine-$i creates"
+    done
+
+      #echo "You have created ${nb_machine} machines"
 #if option ---Drop
  elif [ "$1" == "--drop" ];then
-    echo ""
-    echo "You have chosen the drop option"
-    echo ""
-
-    docker rm -f $USER-alpine
+      echo ""
+      echo "You have chosen the drop option"
+      echo ""
+      echo "Delete container(s)."
+       docker rm -f $(docker ps -a | grep $USER-alpine | awk '{print $1}')
+      echo "End of deletion."
     
 #if option ---Infos
 elif [ "$1" == "--infos" ];then
-    echo ""
-    echo "You have chosen the infos option"
-    echo ""
+      echo ""
+      echo "You have chosen the infos option"
+      echo ""
 
 #if option ---Start
 elif [ "$1" == "--start" ];then
-    echo ""
-    echo "You have chosen the start option"
-    echo ""
+      echo ""
+      echo "You have chosen the start option"
+      echo ""
 
 #if option ---Ansible
 elif [ "$1" == "--ansible" ];then
-    echo ""
-    echo "You have chosen the ansible option"
-    echo ""
+      echo ""
+      echo "You have chosen the ansible option"
+      echo ""
 
 #if no option, display help 
  else
    
-    echo -e
-    "
-        Choose an option 
-      Options : 
+      echo 
+      "
+          Choose an option  
          --create :  Craete Containers
 
          --drop :    Drop containers
@@ -63,5 +70,5 @@ elif [ "$1" == "--ansible" ];then
 
          --ansible : Deploying ansible
 
-    "
+     "
 fi
