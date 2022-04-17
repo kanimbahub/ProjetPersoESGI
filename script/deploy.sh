@@ -2,7 +2,7 @@
 
 #####################################################################
 #                                                                   # 
-#     Description : déployement de mon environnement docker         #
+#     Description : déployement de mon environnement Docker         #
 #                                                                   #
 #                                                                   #
 #                                                                   #
