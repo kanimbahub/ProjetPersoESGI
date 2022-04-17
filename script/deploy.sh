@@ -14,12 +14,19 @@
     echo ""
     echo "You have chosen the create option"
     echo ""
+    nb_machine=1
+    [ "$2" != "" ] && nb_machine=$2
 
+    docker run -tid --name $USER-alpine alpine:latest
+
+    echo "You have created ${nb_machine} machines"
 #if option ---Drop
  elif [ "$1" == "--drop" ];then
     echo ""
     echo "You have chosen the drop option"
     echo ""
+
+    docker rm -f $USER-alpine
     
 #if option ---Infos
 elif [ "$1" == "--infos" ];then
