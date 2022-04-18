@@ -80,6 +80,8 @@ elif [ "$1" == "--start" ];then
       echo ""
       echo "You have chosen the start option"
       echo ""
+      docker start $(docker ps -a | grep $USER-alpine | awk '{print $1}')
+      echo ""
 
 #if option ---Ansible
 elif [ "$1" == "--ansible" ];then
