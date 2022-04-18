@@ -19,16 +19,46 @@
       nb_machine=1
       [ "$2" != "" ] && nb_machine=$2
 
-    # Recovery of Max ID
-      idmax=' docker ps -a --format '{{ .Names}}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r | head -1'  
+    # Setting Min and Max  
+      min=1
+      max=0
+    # Recovery of Max ID  
+       idmax=`docker ps -a --format '{{ .Names}}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r |head -1`
+    # Redifinition of Max ID
+      min=$(($idmax + 1))
+      max=$(($idmax + $nb_machine)) 
 
-    # Creating containers
-      echo "Beginning to create the container(s)..."
-    for i in $(seq 1 $nb_machine);do
-       docker run -tid --name $USER-alpine-$i alpine:latest
+    # Creating container
+      echo "Beginning to create the container(s).."
+   for i in $(seq $min $max);do
+        docker run -tid --name $USER-alpine-$i alpine:latest
       echo "Container $USER-alpine-$i creates"
-    done
+   done
 
+  
+#    # Setting Min and Max
+#    min=1
+#    max=0
+#    # Recovery of Max ID
+#      idmax=' docker ps -a --format '{{ .Names}}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r | head -1'  
+#    # Redefinition of Max ID
+#    min=$(($idmax + 1))
+#    max=$(($idmax + $nb_machine))
+#
+#    # Createing container
+#       echo "Beginning to create the container(s).."
+#    for i in $(seq $min $max);do
+#        docker run -tid --name $USER-alpine-$i alpine:latest
+#       echo "Container $USER-alpine-$i Creates"
+#    done
+
+
+    ## Creating containers
+    #  echo "Beginning to create the container(s)..."
+    #for i in $(seq 1 $nb_machine);do
+    #   docker run -tid --name $USER-alpine-$i alpine:latest
+    #  echo "Container $USER-alpine-$i creates"
+    #done
       #echo "You have created ${nb_machine} machines"
 #if option ---Drop
  elif [ "$1" == "--drop" ];then
