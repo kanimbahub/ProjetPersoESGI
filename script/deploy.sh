@@ -19,6 +19,9 @@
       nb_machine=1
       [ "$2" != "" ] && nb_machine=$2
 
+    # Recovery of Max ID
+      idmax=' docker ps -a --format '{{ .Names}}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r | head -1'  
+
     # Creating containers
       echo "Beginning to create the container(s)..."
     for i in $(seq 1 $nb_machine);do
