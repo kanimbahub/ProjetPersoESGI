@@ -23,7 +23,7 @@
       min=1
       max=0
     # Recovery of Max ID  
-       idmax=`docker ps -a --format '{{ .Names}}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r |head -1`
+       idmax=`docker ps -a --format '{{ .Names}}' | awk -F "-" -v user="$USER" '$0 ~ user"-alpine" {print $3}' | sort -r | head -1`
     # Redifinition of Max ID
       min=$(($idmax + 1))
       max=$(($idmax + $nb_machine)) 
@@ -62,38 +62,43 @@
       #echo "You have created ${nb_machine} machines"
 #if option ---Drop
  elif [ "$1" == "--drop" ];then
-      echo ""
-      echo "You have chosen the drop option"
-      echo ""
-      echo "Delete container(s)."
-       docker rm -f $(docker ps -a | grep $USER-alpine | awk '{print $1}')
-      echo "End of deletion."
+        echo ""
+        echo "You have chosen the drop option"
+        echo ""
+        echo "Delete container(s)."
+         docker rm -f $(docker ps -a | grep $USER-alpine | awk '{print $1}')
+        echo "End of deletion."
     
 #if option ---Infos
 elif [ "$1" == "--infos" ];then
-      echo ""
-      echo "You have chosen the infos option"
-      echo ""
+        echo ""
+        echo "You have chosen the infos option"
+        echo ""
+        echo "Information of containers"
+     for container in $(docker ps -a | grep $USER-alpine | awk '{print $1}');do
+         docker inspect -f' => {{.Name}} - {{.NetworkSettings.IPAddress }} - {{.State.Status}}' $container
+     done
+        echo ""
 
 #if option ---Start
 elif [ "$1" == "--start" ];then
-      echo ""
-      echo "You have chosen the start option"
-      echo ""
-      docker start $(docker ps -a | grep $USER-alpine | awk '{print $1}')
-      echo ""
+        echo ""
+        echo "You have chosen the start option"
+        echo ""
+         docker start $(docker ps -a | grep $USER-alpine | awk '{print $1}')
+        echo ""
 
 #if option ---Ansible
 elif [ "$1" == "--ansible" ];then
-      echo ""
-      echo "You have chosen the ansible option"
-      echo ""
+        echo ""
+        echo "You have chosen the ansible option"
+        echo ""
 
 #if no option, display help 
  else
    
-      echo 
-      "
+        echo 
+         "
           Choose an option  
          --create :  Craete Containers
 
@@ -104,6 +109,5 @@ elif [ "$1" == "--ansible" ];then
          --start :   Starting containers
 
          --ansible : Deploying ansible
-
-     "
+        "
 fi
