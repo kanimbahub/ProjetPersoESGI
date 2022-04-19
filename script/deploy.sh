@@ -31,8 +31,15 @@
     # Creating container
       echo "Beginning to create the container(s).."
    for i in $(seq $min $max);do
-        docker run -tid --name $USER-alpine-$i alpine:latest
-      echo "Container $USER-alpine-$i creates"
+    #    docker run -tid --name $USER-alpine-$i alpine:latest
+        docker run -tid --cap-add NET_ADMIN --cap-add SYS_ADMIN --publish-all=true -v /srv/data:/srv/html -v /sys/fs/cgroup:/sys/fs/cgroup:ro --name $USER-debian-$i -h $USER-debian-$i debian-systemd
+	docker exec -ti $USER-debian-$i /bin/sh -c "useradd -m -p sa3tHJ3/KuYvI $USER"
+	docker exec -ti $USER-debian-$i /bin/sh -c "mkdir  ${HOME}/.ssh && chmod 700 ${HOME}/.ssh && chown $USER:$USER $HOME/.ssh"
+        docker cp $HOME/.ssh/id_rsa.pub $USER-debian-$i:$HOME/.ssh/authorized_keys
+        docker exec -ti $USER-debian-$i /bin/sh -c "chmod 600 ${HOME}/.ssh/authorized_keys && chown $USER:$USER $HOME/.ssh/authorized_keys"
+	docker exec -ti $USER-debian-$i /bin/sh -c "echo '$USER   ALL=(ALL) NOPASSWD: ALL'>>/etc/sudoers"
+        docker exec -ti $USER-debian-$i /bin/sh -c "service ssh start"
+      echo "Container $USER-debian-$i creates"
    done
 
   
@@ -60,13 +67,15 @@
     #  echo "Container $USER-alpine-$i creates"
     #done
       #echo "You have created ${nb_machine} machines"
+
+
 #if option ---Drop
  elif [ "$1" == "--drop" ];then
         echo ""
         echo "You have chosen the drop option"
         echo ""
         echo "Delete container(s)."
-         docker rm -f $(docker ps -a | grep $USER-alpine | awk '{print $1}')
+         docker rm -f $(docker ps -a | grep $USER-debian | awk '{print $1}')
         echo "End of deletion."
     
 #if option ---Infos
@@ -75,7 +84,7 @@ elif [ "$1" == "--infos" ];then
         echo "You have chosen the infos option"
         echo ""
         echo "Information of containers"
-     for container in $(docker ps -a | grep $USER-alpine | awk '{print $1}');do
+     for container in $(docker ps -a | grep $USER-debian | awk '{print $1}');do
          docker inspect -f' => {{.Name}} - {{.NetworkSettings.IPAddress }} - {{.State.Status}}' $container
      done
         echo ""
@@ -85,7 +94,7 @@ elif [ "$1" == "--start" ];then
         echo ""
         echo "You have chosen the start option"
         echo ""
-         docker start $(docker ps -a | grep $USER-alpine | awk '{print $1}')
+         docker start $(docker ps -a | grep $USER-debian | awk '{print $1}')
         echo ""
 
 #if option ---Ansible
